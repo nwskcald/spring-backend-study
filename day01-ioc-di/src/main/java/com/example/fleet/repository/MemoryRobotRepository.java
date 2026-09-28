@@ -1,7 +1,10 @@
 package com.example.fleet.repository;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Primary;
 
 @Repository
+@Primary
 public class MemoryRobotRepository implements RobotRepository{
 
     @Override
