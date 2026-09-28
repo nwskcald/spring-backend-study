@@ -17,7 +17,7 @@ public class RobotAlertService{
     }
 
     public void reportFailure(String robotName){
-        System.out.println("로봇 장애 발생: R-07");
+        System.out.println("로봇 장애 발생: " + robotName);
         alertSender.send("R-07");
     }
 }

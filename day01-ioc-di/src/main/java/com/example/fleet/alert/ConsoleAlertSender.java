@@ -2,7 +2,7 @@ package com.example.fleet.alert;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Component
 public class ConsoleAlertSender implements AlertSender{
 
     @Override
