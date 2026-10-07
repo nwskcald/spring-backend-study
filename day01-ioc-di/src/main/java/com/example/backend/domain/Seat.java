@@ -1,7 +1,12 @@
 package com.example.backend.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Seat{
 
+    @Id
     private String id;
     private String section;
     private boolean reserved;
@@ -10,6 +15,9 @@ public class Seat{
         this.id = id;
         this.section = section;
         this.reserved = false;
+    }
+
+    protected Seat(){
     }
 
     public String getId(){
