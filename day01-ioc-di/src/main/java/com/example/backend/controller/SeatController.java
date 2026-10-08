@@ -4,10 +4,12 @@ import com.example.backend.domain.Seat;
 import com.example.backend.dto.SeatCreateRequest;
 import com.example.backend.dto.SeatResponse;
 import com.example.backend.service.SeatService;
+import com.example.backend.dto.SeatSectionUpdateRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,18 @@ public class SeatController{
         @PathVariable String id
     ){
         Seat seat = seatService.findById(id);
+
+        SeatResponse seatResponse = SeatResponse.from(seat);
+
+        return ResponseEntity.status(200).body(seatResponse);
+    }
+
+    @PatchMapping("/{id}/section")
+    public ResponseEntity<SeatResponse> changeSection(
+        @PathVariable String id,
+        @RequestBody SeatSectionUpdateRequest request
+    ){
+        Seat seat = seatService.changeSection(id, request.getSection());
 
         SeatResponse seatResponse = SeatResponse.from(seat);
 

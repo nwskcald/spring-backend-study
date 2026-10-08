@@ -5,6 +5,7 @@ import com.example.backend.exception.DuplicateSeatException;
 import com.example.backend.exception.SeatNotFoundException;
 import com.example.backend.repository.SeatRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SeatService{
@@ -30,5 +31,16 @@ public class SeatService{
 
         return seatRepository.findById(id)
             .orElseThrow(() -> new SeatNotFoundException(id));
+    }
+
+    @Transactional
+    public Seat changeSection(String id, String newSection){
+
+        Seat seat = seatRepository.findById(id)
+            .orElseThrow(() -> new SeatNotFoundException(id));
+
+        seat.changeSection(newSection);
+
+        return seat;
     }
 }

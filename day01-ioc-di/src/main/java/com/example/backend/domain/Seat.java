@@ -31,4 +31,8 @@ public class Seat{
     public boolean isReserved(){
         return reserved;
     }
+
+    public void changeSection(String newSection){
+        this.section = newSection;
+    }
 }
