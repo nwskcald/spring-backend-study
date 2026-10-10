@@ -7,6 +7,7 @@ import com.example.backend.dto.SeatResponse;
 import com.example.backend.service.SeatService;
 import com.example.backend.dto.SeatSectionUpdateRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,6 +108,37 @@ public class SeatController{
             .map(seat -> SeatResponse.from(seat))
             .toList();
         
+        return ResponseEntity.status(200).body(seatResponses);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<SeatResponse>> findAvailableSeatsPaged(
+        @RequestParam int page,
+        @RequestParam int size
+    ){
+
+        Page<Seat> seats =
+            seatService.findAvailableSeatsPaged(page, size);
+
+        Page<SeatResponse> seatResponses =
+            seats.map(seat -> SeatResponse.from(seat));
+
+        return ResponseEntity.status(200).body(seatResponses);
+    }
+
+    @GetMapping("/search/page")
+    public ResponseEntity<Page<SeatResponse>> findAvailableSeatsBySectionPaged(
+        @RequestParam String section,
+        @RequestParam int page,
+        @RequestParam int size
+    ){
+
+        Page<Seat> seats =
+            seatService.findAvailableSeatsBySectionPaged(section, page, size);
+
+        Page<SeatResponse> seatResponses = 
+            seats.map(seat -> SeatResponse.from(seat));
+
         return ResponseEntity.status(200).body(seatResponses);
     }
 }
