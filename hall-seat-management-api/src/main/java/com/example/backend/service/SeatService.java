@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import java.util.List;
 import com.example.backend.domain.Seat;
 import com.example.backend.domain.Hall;
 import com.example.backend.exception.DuplicateSeatException;
@@ -81,5 +82,22 @@ public class SeatService{
             .orElseThrow(() -> new SeatNotFoundException(seatId));
 
         seat.reserve();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Seat> findAvailableSeats(){
+
+        List<Seat> seats = seatRepository.findByReservedFalse();
+
+        return seats;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Seat> findAvailableSeatsBySection(String section){
+
+        List<Seat> seats = 
+            seatRepository.findBySectionAndReservedFalse(section);
+
+        return seats;
     }
 }

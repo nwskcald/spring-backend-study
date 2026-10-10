@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import java.util.List;
 import com.example.backend.domain.Seat;
 import com.example.backend.dto.SeatCreateRequest;
 import com.example.backend.dto.SeatResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/seats")
@@ -79,5 +81,32 @@ public class SeatController{
         seatService.reserveSuccessfully(id);
 
         return ResponseEntity.status(204).build();
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<SeatResponse>> findAvailableSeats(){
+
+        List<Seat> seats = seatService.findAvailableSeats();
+
+        List<SeatResponse> seatResponses = seats.stream()
+            .map(seat -> SeatResponse.from(seat))
+            .toList();
+        
+        return ResponseEntity.status(200).body(seatResponses);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SeatResponse>> searchAvailableSeats(
+        @RequestParam String section
+    ){
+
+        List<Seat> seats = 
+            seatService.findAvailableSeatsBySection(section);
+
+        List<SeatResponse> seatResponses = seats.stream()
+            .map(seat -> SeatResponse.from(seat))
+            .toList();
+        
+        return ResponseEntity.status(200).body(seatResponses);
     }
 }
