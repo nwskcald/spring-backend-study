@@ -62,4 +62,24 @@ public class SeatService{
 
         return seat;
     }
+
+    @Transactional
+    public void reserveWithFailure(String seatId){
+
+        Seat seat = seatRepository.findById(seatId)
+            .orElseThrow(() -> new SeatNotFoundException(seatId));
+
+        seat.reserve();
+
+        throw new IllegalStateException("예약 처리 중 오류 발생");
+    }
+
+    @Transactional
+    public void reserveSuccessfully(String seatId){
+
+        Seat seat = seatRepository.findById(seatId)
+            .orElseThrow(() -> new SeatNotFoundException(seatId));
+
+        seat.reserve();
+    }
 }

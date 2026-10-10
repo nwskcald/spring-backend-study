@@ -62,4 +62,22 @@ public class SeatController{
 
         return ResponseEntity.status(200).body(seatResponse);
     }
+
+    @PostMapping("/{id}/reserve-test")
+    public ResponseEntity<Void> reserveWithFailure(
+        @PathVariable String id
+    ){
+        seatService.reserveWithFailure(id);
+
+        return ResponseEntity.status(204).build();
+    }
+
+    @PostMapping("/{id}/reserve")
+    public ResponseEntity<Void> reserveSuccessfully(
+        @PathVariable String id
+    ){
+        seatService.reserveSuccessfully(id);
+
+        return ResponseEntity.status(204).build();
+    }
 }

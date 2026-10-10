@@ -52,4 +52,14 @@ public class Seat{
     public void changeSection(String newSection){
         this.section = newSection;
     }
+
+    public void reserve(){
+        if(isReserved()){
+            throw new IllegalStateException(
+                "이미 예약된 좌석입니다."
+            );
+        }
+
+        this.reserved = true;
+    }
 }
