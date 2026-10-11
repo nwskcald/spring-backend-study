@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 @Entity
 public class Hall{
@@ -33,6 +34,10 @@ public class Hall{
     }
 
     public List<Seat> getSeats(){
-        return seats;
+        return Collections.unmodifiableList(seats);
+    }
+
+    public void addSeat(Seat seat){
+        seats.add(seat);
     }
 }

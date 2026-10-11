@@ -7,11 +7,16 @@ public class SeatResponse{
     private String id;
     private String section;
     private boolean reserved;
+    private Long hallId;
+    private String hallName;
 
-    public SeatResponse(String id, String section, boolean reserved){
+    public SeatResponse(String id, String section, 
+    boolean reserved, Long hallId, String hallName){
         this.id = id;
         this.section = section;
         this.reserved = reserved;
+        this.hallId = hallId;
+        this.hallName = hallName;
     }
 
     public static SeatResponse from(Seat seat){
@@ -19,7 +24,9 @@ public class SeatResponse{
         return new SeatResponse(
             seat.getId(),
             seat.getSection(),
-            seat.isReserved()
+            seat.isReserved(),
+            seat.getHall().getId(),
+            seat.getHall().getName()
         );
     }
 
@@ -33,5 +40,13 @@ public class SeatResponse{
 
     public boolean isReserved(){
         return reserved;
+    }
+    
+    public Long getHallId(){
+        return hallId;
+    }
+
+    public String getHallName(){
+        return hallName;
     }
 }

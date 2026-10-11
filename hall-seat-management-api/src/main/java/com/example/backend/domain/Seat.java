@@ -27,7 +27,7 @@ public class Seat{
         this.reserved = false;
         this.hall = hall;
 
-        hall.getSeats().add(this);
+        hall.addSeat(this);
     }
 
     protected Seat(){
