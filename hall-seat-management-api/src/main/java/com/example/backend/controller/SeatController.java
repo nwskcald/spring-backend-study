@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import java.util.List;
+import jakarta.validation.Valid;
 import com.example.backend.domain.Seat;
 import com.example.backend.dto.SeatCreateRequest;
 import com.example.backend.dto.SeatResponse;
@@ -30,7 +31,7 @@ public class SeatController{
 
     @PostMapping
     public ResponseEntity<SeatResponse> register(
-        @RequestBody SeatCreateRequest request
+        @Valid @RequestBody SeatCreateRequest request
     ){
         Seat seat = seatService.register(
             request.getId(),
@@ -57,7 +58,7 @@ public class SeatController{
     @PatchMapping("/{id}/section")
     public ResponseEntity<SeatResponse> changeSection(
         @PathVariable String id,
-        @RequestBody SeatSectionUpdateRequest request
+        @Valid @RequestBody SeatSectionUpdateRequest request
     ){
         Seat seat = seatService.changeSection(id, request.getSection());
 

@@ -1,7 +1,10 @@
 package com.example.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class SeatSectionUpdateRequest{
 
+    @NotBlank (message = "구역은 필수입니다.")
     private String section;
 
     public SeatSectionUpdateRequest(String section){
