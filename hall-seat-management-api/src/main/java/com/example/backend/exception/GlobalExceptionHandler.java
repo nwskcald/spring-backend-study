@@ -1,9 +1,11 @@
 package com.example.backend.exception;
 
+import java.util.stream.Collectors;
 import com.example.backend.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
@@ -26,5 +28,21 @@ public class GlobalExceptionHandler{
             new ErrorResponse("DUPLICATE_SEAT", e.getMessage());
 
         return ResponseEntity.status(409).body(errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> validationError(
+        MethodArgumentNotValidException e
+    ){
+        String message = e.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(error -> error.getDefaultMessage())
+            .collect(Collectors.joining(" / "));
+
+        ErrorResponse errorResponse =
+            new ErrorResponse("VALIDATION_ERROR", message);
+
+        return ResponseEntity.status(400).body(errorResponse);
     }
 }
