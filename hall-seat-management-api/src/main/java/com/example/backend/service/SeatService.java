@@ -130,4 +130,15 @@ public class SeatService{
 
         return seatRepository.findBySectionAndReservedFalse(section, pageable);
     }
+
+    @Transactional
+    public void delete(String id){
+
+        Seat seat = seatRepository.findById(id)
+            .orElseThrow(
+                () -> new SeatNotFoundException(id)
+            );
+
+        seatRepository.delete(seat);
+    }
 }
