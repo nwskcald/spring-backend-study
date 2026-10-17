@@ -1,20 +1,20 @@
 package com.example.fleet.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Task{
 
     @Id
-    private String taskNumber;
+    private String number;
 
-    private String taskDeparture;
-    private String taskDestination;
+    private String departure;
+    private String destination;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
@@ -24,29 +24,29 @@ public class Task{
     private Robot robot;
 
     public Task(
-        String taskNumber,
-        String taskDeparture,
-        String taskDestination
+        String number,
+        String departure,
+        String destination
     ){
-        this.taskNumber = taskNumber;
-        this.taskDeparture = taskDeparture;
-        this.taskDestination = taskDestination;
+        this.number = number;
+        this.departure = departure;
+        this.destination = destination;
         taskStatus = TaskStatus.PENDING;
     }
 
     protected Task(){
     }
 
-    public String getTaskNumber(){
-        return taskNumber;
+    public String getNumber(){
+        return number;
     }
 
-    public String getTaskDeparture(){
-        return taskDeparture;
+    public String getDeparture(){
+        return departure;
     }
 
-    public String getTaskDestination(){
-        return taskDestination;
+    public String getDestination(){
+        return destination;
     }
 
     public TaskStatus getTaskStatus(){

@@ -1,18 +1,20 @@
 package com.example.fleet.domain;
 
+import com.example.fleet.exception.RobotAlreadyAssignedException;
+import com.example.fleet.exception.TaskAlreadyAssignedException;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 
 @Entity
 public class Robot{
 
     @Id
-    private String robotNumber;
+    private String number;
 
-    private String robotName;
+    private String name;
     
     @Enumerated(EnumType.STRING)
     private RobotStatus robotStatus;
@@ -21,23 +23,23 @@ public class Robot{
     private Task task;
 
     public Robot(
-        String robotNumber,
-        String robotName
+        String number,
+        String name
     ){
-        this.robotNumber = robotNumber;
-        this.robotName = robotName;
+        this.number = number;
+        this.name = name;
         robotStatus = RobotStatus.IDLE;
     }
 
     protected Robot(){
     }
 
-    public String getRobotNumber(){
-        return robotNumber;
+    public String getNumber(){
+        return number;
     }
 
-    public String getRobotName(){
-        return robotName;
+    public String getName(){
+        return name;
     }
 
     public RobotStatus getRobotStatus(){
@@ -57,15 +59,11 @@ public class Robot{
     public void assign(Task task){
 
         if(!isRobotAvailableToAssign()){
-            throw new IllegalStateException(
-                "이미 작업 중인 로봇입니다."
-            );
+            throw new RobotAlreadyAssignedException();
         }
 
         if(!task.isTaskAvailableToBeAssigned()){
-            throw new IllegalStateException(
-                "이미 배정된 작업입니다."
-            );
+            throw new TaskAlreadyAssignedException();
         }
 
         this.task = task;
