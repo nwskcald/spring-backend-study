@@ -4,23 +4,29 @@ import com.example.fleet.domain.Robot;
 import com.example.fleet.domain.Task;
 import com.example.fleet.dto.AssignTaskRequest;
 import com.example.fleet.dto.AssignTaskResponse;
+import com.example.fleet.dto.UnAssignTaskResponse;
 import com.example.fleet.dto.RobotRegisterRequest;
 import com.example.fleet.dto.RobotResponse;
 import com.example.fleet.service.RobotService;
+import com.example.fleet.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
-@ReqeustMapping("/robots")
+@RequestMapping("/robots")
 public class RobotController{
 
-    private final RobotService robotService;
-    private final TaskService taskService;
+    private RobotService robotService;
+    private TaskService taskService;
 
     public RobotController(
         RobotService robotService
@@ -30,11 +36,11 @@ public class RobotController{
 
     @PostMapping
     public ResponseEntity<RobotResponse> register(
-        @RequestBody RobotRegisterRequest request
+        @Valid @RequestBody RobotRegisterRequest request
     ){
         Robot robot = robotService.register(
-            request.getNumber(),
-            request.getName()
+            request.getRobotNumber(),
+            request.getRobotName()
         );
 
         RobotResponse response = RobotResponse.from(robot);
@@ -57,13 +63,23 @@ public class RobotController{
     @PatchMapping("/{robotNumber}/assignment")
     public ResponseEntity<AssignTaskResponse> assignTask(
         @PathVariable String robotNumber,
-        @RequestBody AssignTaskRequest request
+        @Valid @RequestBody AssignTaskRequest request
     ){
         Robot robot = 
             robotService.assignTask(robotNumber, request.getTaskNumber());
 
         AssignTaskResponse response = 
             AssignTaskResponse.from(robot, robot.getTask());
+
+        return ResponseEntity.status(200).body(response);
+    }
+
+    @DeleteMapping("/{robotNumber}/assignment")
+    public ResponseEntity<UnAssignTaskResponse> unAssignTask(
+        @PathVariable String robotNumber
+    ){
+        UnAssignTaskResponse response =
+            robotService.unAssignTask(robotNumber);
 
         return ResponseEntity.status(200).body(response);
     }

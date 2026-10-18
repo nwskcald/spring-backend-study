@@ -2,19 +2,21 @@ package com.example.fleet.dto;
 
 import com.example.fleet.domain.Robot;
 import com.example.fleet.domain.Task;
+import com.example.fleet.domain.RobotStatus;
+import com.example.fleet.domain.TaskStatus;
 
 public class AssignTaskResponse{
 
     private String robotNumber;
-    private String robotStatus;
+    private RobotStatus robotStatus;
     private String taskNumber;
-    private String taskStatus;
+    private TaskStatus taskStatus;
 
     public AssignTaskResponse(
         String robotNumber,
-        String robotStatus,
+        RobotStatus robotStatus,
         String taskNumber,
-        String taskStatus
+        TaskStatus taskStatus
     ){
         this.robotNumber = robotNumber;
         this.robotStatus = robotStatus;
@@ -38,7 +40,7 @@ public class AssignTaskResponse{
         return robotNumber;
     }
 
-    public String getRobotStatus(){
+    public RobotStatus getRobotStatus(){
         return robotStatus;
     }
 
@@ -46,7 +48,7 @@ public class AssignTaskResponse{
         return taskNumber;
     }
 
-    public String getTaskStatus(){
+    public TaskStatus getTaskStatus(){
         return taskStatus;
     }
 }

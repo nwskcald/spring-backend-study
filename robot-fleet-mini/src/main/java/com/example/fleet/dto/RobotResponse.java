@@ -1,18 +1,19 @@
 package com.example.fleet.dto;
 
 import com.example.fleet.domain.Robot;
+import com.example.fleet.domain.RobotStatus;
 
 public class RobotResponse{
 
     private String robotNumber;
     private String robotName;
-    private String robotStatus;
+    private RobotStatus robotStatus;
     private String taskNumber;
 
     public RobotResponse(
         String robotNumber,
         String robotName,
-        String robotStatus,
+        RobotStatus robotStatus,
         String taskNumber
     ){
         this.robotNumber = robotNumber;
@@ -25,11 +26,17 @@ public class RobotResponse{
     }
 
     public static RobotResponse from(Robot robot){
+
+        String taskNumber = 
+                robot.getTask() == null
+                ? null
+                : robot.getTask().getNumber();
+
         return new RobotResponse(
             robot.getNumber(),
             robot.getName(),
             robot.getRobotStatus(),
-            robot.getTask().getNumber()
+            taskNumber
         );
     }
 
@@ -41,7 +48,7 @@ public class RobotResponse{
         return robotName;
     }
 
-    public String getRobotStatus(){
+    public RobotStatus getRobotStatus(){
         return robotStatus;
     }
 

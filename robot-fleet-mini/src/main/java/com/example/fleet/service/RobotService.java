@@ -8,6 +8,7 @@ import com.example.fleet.exception.TaskNotFoundException;
 import com.example.fleet.repository.RobotRepository;
 import com.example.fleet.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import com.example.fleet.dto.UnAssignTaskResponse;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -66,8 +67,26 @@ public class RobotService{
         robot.assign(task);
 
         // Dirty Checking
-        // Hibernate이 commit 이후 Repository 변경
 
         return robot;
+    }
+
+    // 로봇에게 배정된 작업 해제
+    @Transactional
+    public UnAssignTaskResponse unAssignTask(String robotNumber){
+
+        Robot robot = robotRepository.findByNumber(robotNumber)
+            .orElseThrow(
+                () -> new RobotNotFoundException()
+            );
+        
+        // 해제 후에는 robot.getTask()가 null이므로 미리 보관한다.
+        Task task = robot.getTask();
+
+        robot.unAssign();
+
+        // Dirty Checking
+
+        return UnAssignTaskResponse.from(robot, task);
     }
 }

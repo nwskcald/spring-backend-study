@@ -2,6 +2,8 @@ package com.example.fleet.domain;
 
 import com.example.fleet.exception.RobotAlreadyAssignedException;
 import com.example.fleet.exception.TaskAlreadyAssignedException;
+import com.example.fleet.exception.RobotNotAssignedException;
+import com.example.fleet.exception.TaskNotAssignedException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -50,12 +52,17 @@ public class Robot{
         return task;
     }
 
-    // 로봇 배정 가능 여부 검사 메소드
+    // 로봇 작업 할당 가능 여부 검사
     public boolean isRobotAvailableToAssign(){
         return robotStatus == RobotStatus.IDLE;
     }
 
-    // 로봇 배정 후 상태 변경 메소드
+    // 로봇 작업 할당 해제 가능 여부 검사
+    public boolean isRobotAvailableToUnAssign(){
+        return robotStatus == RobotStatus.BUSY;
+    }
+
+    // 로봇 작업 할당
     public void assign(Task task){
 
         if(!isRobotAvailableToAssign()){
@@ -69,5 +76,21 @@ public class Robot{
         this.task = task;
         robotStatus = RobotStatus.BUSY;
         task.assign(this);
+    }
+
+    // 로봇 작업 할당 해제
+    public void unAssign(){
+
+        if(!isRobotAvailableToUnAssign()){
+            throw new RobotNotAssignedException();
+        }
+
+        if(!task.isTaskAvailableToBeUnAssigned()){
+            throw new TaskNotAssignedException();
+        }
+
+        task.unAssign();
+        robotStatus = RobotStatus.IDLE;
+        this.task = null;
     }
 }

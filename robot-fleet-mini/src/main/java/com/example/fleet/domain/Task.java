@@ -57,15 +57,25 @@ public class Task{
         return robot;
     }
 
-    // 작업 배정 가능 여부 검사 메소드
+    // 작업 할당 가능 여부 검사
     public boolean isTaskAvailableToBeAssigned(){
         return taskStatus == TaskStatus.PENDING;
     }
 
-    // 작업 배정 후 상태 변경 메소드
+    // 작업 할당 해제 가능 여부 검사
+    public boolean isTaskAvailableToBeUnAssigned(){
+        return taskStatus == TaskStatus.ASSIGNED;
+    }
+
+    // 작업 할당
     public void assign(Robot robot){
         this.robot = robot;
         taskStatus = TaskStatus.ASSIGNED;
     }
 
+    // 작업 할당 해제
+    public void unAssign(){
+        taskStatus = TaskStatus.PENDING;
+        this.robot = null;
+    }
 }

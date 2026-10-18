@@ -4,6 +4,7 @@ import com.example.fleet.domain.Task;
 import com.example.fleet.dto.TaskRegisterRequest;
 import com.example.fleet.dto.TaskResponse;
 import com.example.fleet.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class TaskController{
 
     @PostMapping
     public ResponseEntity<TaskResponse> register(
-        @RequestBody TaskRegisterRequest request
+        @Valid @RequestBody TaskRegisterRequest request
     ){
 
         Task task = taskService.register(
@@ -40,7 +41,7 @@ public class TaskController{
 
     @GetMapping("/{number}")
     public ResponseEntity<TaskResponse> findByNumber(
-        @PathVariable String number
+        @Valid @PathVariable String number
     ){
 
         Task task = taskService.findByNumber(number);
