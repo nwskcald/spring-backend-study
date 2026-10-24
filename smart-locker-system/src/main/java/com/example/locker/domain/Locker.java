@@ -1,10 +1,12 @@
 package com.example.locker.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
-import java.util.ArrayList;
+
+import com.example.locker.exception.AlreadyOccupiedLockerException;
+import com.example.locker.exception.TerminateAvailableLockerException;
 
 @Entity
 public class Locker{
@@ -18,11 +20,6 @@ public class Locker{
 
     @Enumerated(EnumType.STRING)
     private LockerStatus status;
-
-    // 양방향 연관관계 굳이 필요할까?
-    // 요구사항에 storage 리스트의 사용이 필요한것이 있나?
-    @OneToMany(mappedBy = "locker")
-    private List<Storage> storage = new ArrayList<>();
 
     public Locker(
         String number,
@@ -54,18 +51,17 @@ public class Locker{
         return status;
     }
 
-    public void updateStatusOccupied(){
+    private void updateStatusOccupied(){
         this.status = LockerStatus.OCCUPIED;
     }
 
-    public void updateStatusAvailable(){
+    private void updateStatusAvailable(){
         this.status = LockerStatus.AVAILABLE;
     }
 
     public void occupy(){
         if(!(this.status == LockerStatus.AVAILABLE)){
-            // Exception throw.
-            // 차후 구현
+            throw new AlreadyOccupiedLockerException();
         }
 
         updateStatusOccupied();
@@ -73,8 +69,7 @@ public class Locker{
 
     public void terminate(){
         if(!(this.status == LockerStatus.OCCUPIED)){
-            // Exception throw;
-            // 차후 구현
+            throw new TerminateAvailableLockerException();
         }
         
         updateStatusAvailable();

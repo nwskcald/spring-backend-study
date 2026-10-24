@@ -3,9 +3,14 @@ package com.example.locker.domain;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import com.example.locker.exception.EndCompletedStorageException;
 
 @Entity
 public class Storage{
@@ -20,7 +25,6 @@ public class Storage{
 
     @Enumerated(EnumType.STRING)
     private StorageStatus status;
-
 
     @ManyToOne
     @JoinColumn(name = "locker_number", nullable = false)
@@ -57,19 +61,22 @@ public class Storage{
         return endTime;
     }
 
+    public StorageStatus getStatus(){
+        return status;
+    }
+
     public Locker getLocker(){
         return locker;
     }
 
-    public void updateStatusCompleted(){
+    private void updateStatusCompleted(){
         this.status = StorageStatus.COMPLETED;
         this.endTime = LocalDateTime.now();
     }
 
     public void end(){
         if(!(this.status == StorageStatus.ACTIVE)){
-            // Exception Throw
-            // 차후 구현
+            throw new EndCompletedStorageException();
         }
         
         updateStatusCompleted();
